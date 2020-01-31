@@ -11,7 +11,21 @@
 
 ## upload excel file
 library(readxl)
-usa_tenure <- read_xlsx("tenure_states.xlsx", skip = 2)
+## skip the first 3 rows which say:
+## National Center for Education Statistics
+## Number of faculty in Title IV institutions, by full- and part-time status, tenure status, and state: Fall 2004
+usa_tenure <- read_xlsx("tenure_states.xlsx", skip = 3)
+## skip 3 and the first 4 columns are "Full-time facult~"
+## the last 4 columns are "Part-time facul~"
+usa_tenure
+library(tidyverse)
+## rename all the columns
+colnames(usa_tenure) <- c("STATE", "FT_TOT", "FT_T", "FT_TT", "FT_NTT", "PT_TOT", "PT_T", "PT_TT", "PT_NTT")
 
-
-write.csv(usa_tenure, "usa_tenure.csv")
+## drop na removes blank rows and last 2 row, foot notes
+usa_tenure <- drop_na(usa_tenure)
+## drop columns with totals
+usa_tenure <- select(usa_tenure, -FT_TOT, -PT_TOT)
+## drop first row with total usa
+usa_tenure <- usa_tenure[2 : length(usa_tenure),]
+write.csv(usa_tenure, "2004_usa_tenure.csv")
