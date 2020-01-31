@@ -29,3 +29,6 @@ usa_tenure <- select(usa_tenure, -FT_TOT, -PT_TOT)
 ## drop first row with total usa
 usa_tenure <- usa_tenure[2 : nrow(usa_tenure),]
 write.csv(usa_tenure, "2004_usa_tenure.csv")
+
+
+## next we need to get population data for each state in 2004 to find density
